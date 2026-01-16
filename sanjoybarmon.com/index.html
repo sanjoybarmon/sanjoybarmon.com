@@ -1080,10 +1080,10 @@
     function getSectionIdFromPath(path) {
         // ট্রেইলিং স্ল্যাশ মুছে ফেলা
         path = path.replace(/\/$/, "");
-        // URL-এর শেষ অংশ নেওয়া (যেমন: /about -> about)
+        // URL-এর শেষ অংশ নেওয়া (যেমন: /about -> about)
         var lastSegment = path.split('/').pop();
         
-        // যদি রুট হয় বা index.html হয়
+        // যদি রুট হয় বা index.html হয়
         if (!lastSegment || lastSegment === 'index.html') {
             return 'home';
         }
@@ -1094,7 +1094,7 @@
         var sectionId = getSectionIdFromPath(path);
         var targetSection = $('#' + sectionId);
         
-        // যদি সেকশনটি খুঁজে পাওয়া যায়
+        // যদি সেকশনটি খুঁজে পাওয়া যায়
         if (targetSection.length) {
             // সব সেকশন থেকে একটিভ ক্লাস সরানো
             $('.section').removeClass('active back-section');
@@ -1104,7 +1104,7 @@
             targetSection.addClass('active');
             
             // নেভিগেশন মেনু আপডেট করা
-            // আমরা href অ্যাট্রিবিউট চেক করছি যা /about দিয়ে শেষ হয়
+            // আমরা href অ্যাট্রিবিউট চেক করছি যা /about দিয়ে শেষ হয়
             var navLink = $('.navigation ul li a').filter(function() {
                 var href = $(this).attr('href');
                 return href === '/' + sectionId || (sectionId === 'home' && href === '/');
@@ -1114,19 +1114,22 @@
                 navLink.parent().addClass('active');
             }
             
-            // টাইটেল আপডেট করা
-            var title = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
-            if(sectionId === 'home') title = "Home";
-            document.title = "Sanjoy Barmon | " + title;
+            // টাইটেল আপডেট করা (লজিক ফিক্স করা হয়েছে)
+            if (pageTitles[sectionId]) {
+                document.title = pageTitles[sectionId];
+            } else {
+                var title = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+                document.title = "Sanjoy Barmon | " + title;
+            }
         }
     }
 
-    // মেনু ক্লিকের সময়
+    // মেনু ক্লিকের সময়
     $('.navigation ul li a, .home-btn a').on('click', function(e) {
         e.preventDefault(); 
         var href = $(this).attr('href');
         
-        // ব্রাউজারের হিস্ট্রি পরিবর্তন (রিফ্রেশ ছাড়া)
+        // ব্রাউজারের হিস্ট্রি পরিবর্তন (রিফ্রেশ ছাড়া)
         window.history.pushState(null, null, href);
         
         // সেকশন পরিবর্তন
@@ -1138,7 +1141,7 @@
         switchSection(window.location.pathname);
     };
 
-    // প্রথমবার লোড হওয়ার সময় সঠিক সেকশন দেখানো
+    // প্রথমবার লোড হওয়ার সময় সঠিক সেকশন দেখানো
     switchSection(window.location.pathname);
   });
   </script>
@@ -1146,4 +1149,5 @@
 </body>
 
 </html>
+
 
